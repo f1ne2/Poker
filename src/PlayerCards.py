@@ -1,4 +1,4 @@
 class PlayerCards:
-    def __init__(self, str_hands: str, str_table: str) -> str:
-        self.str_hands = str_hands
-        self.str_table = str_table
+    def __init__(self, common_cards: list, custom: list):
+        self.common_cards = common_cards
+        self.custom = custom
