@@ -1,14 +1,17 @@
 import unittest
 import sys
-sys.path.insert(0, "D:/Git/Poker/src")
+sys.path.insert(0, "D:/Git/Poker/Poker")
 from Converter import *
-from Cards import Rank, Suit
+from Cards import Rank, Suit, Card
+
+
 class TestCard(unittest.TestCase):
     def setUp(self):
         self.str1 = "4cKs4h8s7s Ad4s Ac4d As9s Kh10s Qd3d 10c10h"
 
     def test_divide(self):
-        self.assertEqual(divide(self.str1), (['Ad4s', 'Ac4d', 'As9s', 'Kh10s', 'Qd3d', '10c10h'], "4cKs4h8s7s"))
+        self.assertEqual(divide(self.str1), (['Ad4s', 'Ac4d', 'As9s', 'Kh10s',
+                                              'Qd3d', '10c10h'], "4cKs4h8s7s"))
 
     def test_to_str(self):
         self.set1 = [Rank.Four, Suit.clubs, Rank.K,

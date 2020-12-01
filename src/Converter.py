@@ -1,5 +1,5 @@
 import Cards
-from Cards import Suit, Rank
+from Cards import Suit, Rank, Card
 from typing import List, Tuple
 
 
