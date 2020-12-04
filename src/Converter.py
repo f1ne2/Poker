@@ -3,10 +3,10 @@ from Cards import Suit, Rank, Card
 from typing import List, Tuple
 
 
-def divide(str_cards: str) -> Tuple[List[str], str]:
+def divide(str_cards: str) -> Tuple[str, List[str]]:
     str2 = str_cards.split(" ", 1)
     players = str2[1].split()
-    return players, str2[0]
+    return str2[0], players
 
 
 def to_player_cards(common_cards: str, custom: List[str]) -> Tuple[Rank, Suit]:
@@ -48,7 +48,7 @@ def to_str(common_to_str: Tuple[Rank, Suit],
     for t in range(len(hands_list)-1):
         if t % 2 == 0:
             hands_out = hands_out + hands_list[t] + hands_list[t + 1] + " "
-            hands_res = hands_out.strip(" ")
+            hands_res = hands_out.strip()
     return common2, hands_res
 
 
