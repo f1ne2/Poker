@@ -67,4 +67,4 @@ set3 = {Cards.Rank.Two: "2", Cards.Rank.Three: "3",
         Cards.Rank.Ten: "10", Cards.Rank.J: "J", Cards.Rank.Q: "Q",
         Cards.Rank.K: "K", Cards.Rank.A: "A"}
 set4 = {Cards.Suit.hearts: "h", Cards.Suit.diamonds: "d",
-        Cards.Suit.clubs: "c", Cards.Suit.spades: "s"}
+        Cards.00Suit.clubs: "c", Cards.Suit.spades: "s"}
