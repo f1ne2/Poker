@@ -21,47 +21,112 @@ class PlayerCards:
                                                                       Suit]):
         self.common_cards = common_cards
         self.custom = custom
-        self.custom2 = [[0] * 14 for i in range(int(len(self.custom)/4))]
         self.force_collection = [0] * int(len(self.custom)/4)
-        for f in range(int(len(self.custom)/4)):
-            for m in range(len(self.common_cards)):
-                self.custom2[f][m] = self.common_cards[m]
-        n = 0
-        for f in range(int(len(self.custom)/4)):
-            for m in range(10, len(self.custom2[f])):
-                self.custom2[f][m] = self.custom[n]
-                n += 1
 
-    def pairs(self):
-        k = 0
-        a = 0
-        b = 0
-        a1 = 0
-        b1 = 0
-        for i in range(len(self.custom2)):
-            for x in range(0, len(self.custom2[i]), 2):
-                for y in range(0, len(self.custom2[i]), 2):
-                    if x != y:
-                        if self.custom2[i][x] == self.custom2[i][y]:
-                            k += 1
-                            if k == 1:
-                                a, b = x, y
-                if k == 0 and self.force_collection[i] < 1:
-                    self.force_collection[i] = Force.High_card.value
-                if k == 1 and self.force_collection[i] == 2:
-                    if a != b1 and b != a1:
-                        self.force_collection[i] = Force.Two_pairs.value
-                if k == 1 and self.force_collection[i] < 2:
-                    a1 = a
-                    b1 = b
-                    self.force_collection[i] = Force.Pair.value
-                if k == 2 and self.force_collection[i] < 4:
-                    self.force_collection[i] = Force.Set.value
-                if k == 3 and self.force_collection[i] < 8:
-                    self.force_collection[i] = Force.Four_of_a_kind.value
-                k = 0
-            a = 0
-            b = 0
-            a1 = 0
-            b1 = 0
-        return self.force_collection
+    def redefine(self):
+        n = 0
+        self.custom2 = [[0] * 14 for i in range(int(len(self.custom) / 4))]
+        for f in range(int(len(self.custom)/4)):
+            for m in range(len(self.custom2[f])):
+                if m < len(self.common_cards):
+                    self.custom2[f][m] = self.common_cards[m]
+                else:
+                    self.custom2[f][m] = self.custom[n]
+                    n += 1
+        return self.custom2
+
+    def is_pairs(self, h):
+        repeated = []
+        for i in range(0, len(h), 2):
+            repeated.append(h.count(h[i]))
+        if repeated.count(2) == 2:
+            return True
+        return False
+
+    def is_two_pairs(self, h):
+        repeated = []
+        for i in range(0, len(h), 2):
+            repeated.append(h.count(h[i]))
+        if repeated.count(2) == 4 or repeated.count(2) == 6 or repeated.count(2) == 8:
+            return True
+        return False
+
+    def is_set(self, h):
+        repeated = []
+        for i in range(0, len(h), 2):
+            repeated.append(h.count(h[i]))
+        if repeated.count(3) == 3 or repeated.count(3) == 6:
+            return True
+        return False
+
+    def is_four_of_kind(self, h):
+        repeated = []
+        for i in range(0, len(h), 2):
+            repeated.append(h.count(h[i]))
+        if repeated.count(4) == 4:
+            return True
+        return False
+
+    def is_high_card(self, h):
+        repeated = []
+        for i in range(0, len(h), 2):
+            repeated.append(h.count(h[i]))
+        if repeated.count(1) > 5:
+            return True
+        return False
+
+    def is_full_house(self, h):
+        repeated = []
+        for i in range(0, len(h), 2):
+            repeated.append(h.count(h[i]))
+        if repeated.count(2) == 2 and repeated.count(3) == 3 \
+                or repeated.count(2) == 4 and repeated.count(3) == 3:
+            return True
+        return False
+
+    def is_flush(self, h):
+        repeated = []
+        for i in range(1, len(h), 2):
+            repeated.append(h.count(h[i]))
+        if repeated.count(5) > 4:
+            return True
+        return False
+
+    def is_straight(self, h):
+        rank = []
+        eq = 0
+        for i in range(0, len(h), 2):
+            rank.append(h[i].value)
+        rank.sort()
+        for j in range(len(rank)-1):
+            if rank[j]+1 == rank[j+1]:
+                eq += 1
+        if eq == 4:
+            return True
+        return False
+
+    def is_straight_flush(self, h, flush):
+        if flush:
+            rank = []
+            eq = 0
+            for i in range(0, len(h), 2):
+                rank.append(h[i].value)
+            rank.sort()
+            for j in range(len(rank) - 1):
+                if rank[j] + 1 == rank[j + 1]:
+                    eq += 1
+            if eq == 4:
+                return True
+            return False
+
+
+
+
+
+
+
+
+
+
+
+
