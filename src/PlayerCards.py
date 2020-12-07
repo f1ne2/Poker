@@ -1,20 +1,6 @@
-from enum import Enum
 from Cards import Rank, Suit, Card
 from typing import Tuple
 from Converter import *
-
-
-class Force(Enum):
-    High_card = 1
-    Pair = 2
-    Two_pairs = 3
-    Set = 4
-    Straight = 5
-    Flush = 6
-    Full_house = 7
-    Four_of_a_kind = 8
-    Straight_flush = 9
-
 
 class PlayerCards:
     def __init__(self, common_cards: Tuple[Rank, Suit], custom: Tuple[Rank,
@@ -105,19 +91,42 @@ class PlayerCards:
             return True
         return False
 
-    def is_straight_flush(self, h, flush):
-        if flush:
-            rank = []
-            eq = 0
-            for i in range(0, len(h), 2):
-                rank.append(h[i].value)
-            rank.sort()
-            for j in range(len(rank) - 1):
-                if rank[j] + 1 == rank[j + 1]:
-                    eq += 1
-            if eq == 4:
-                return True
-            return False
+    def is_straight_flush(self, h):
+        rank = []
+        eq = 0
+        for i in range(0, len(h), 2):
+            rank.append(h[i].value)
+        rank.sort()
+        for j in range(len(rank) - 1):
+            if rank[j] + 1 == rank[j + 1]:
+                eq += 1
+        if eq == 4:
+            return True
+        return False
+
+
+class Sort:
+    def __init__(self, custom2: Tuple[Rank,Suit]):
+        self.custom2 = custom2
+
+    def partition(self, arr, low, high):
+        pivot = arr[high]
+        j = low - 1
+        for i in range(low, high):
+            if arr[i] <= pivot:
+                j += 1
+                arr[j], arr[i] = arr[i], arr[j]
+                self.custom2[j], self.custom2[i] = self.custom2[i], self.custom2[j]
+        arr[j + 1], arr[high] = arr[high], arr[j + 1]
+        self.custom2[j+1], self.custom2[high] = self.custom2[high], self.custom2[j+1]
+        return j+1
+
+    def quick_sort(self, arr, low, high):
+        if low < high:
+            pivotal = Sort.partition(self, arr, low, high)
+            Sort.quick_sort(self, arr, low, pivotal - 1)
+            Sort.quick_sort(self, arr, pivotal + 1, high)
+
 
 
 
