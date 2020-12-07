@@ -38,17 +38,17 @@ def to_str(common_to_str: Tuple[Rank, Suit],
         if set4.get(common_to_str[i]) is not None:
             common2 = common2 + set4.get(common_to_str[i])
     for j in range(len(hands_to_str)):
-        if set3.get(hands_to_str[j]) is not None:
-            hands_res = hands_res + set3.get(hands_to_str[j])
-        if set4.get(hands_to_str[j]) is not None:
-            hands_res = hands_res + set4.get(hands_to_str[j]) + " "
+        for t in range(len(hands_to_str[j])):
+            if set3.get(hands_to_str[j][t]) is not None:
+                hands_res = hands_res + set3.get(hands_to_str[j][t])
+            if set4.get(hands_to_str[j][t]) is not None:
+                hands_res = hands_res + set4.get(hands_to_str[j][t]) + " "
+    hands_res = hands_res.strip(" ")
+    hands_res = hands_res.split(" ")
     hands_out = ""
-    hands_list = hands_res.strip(" ")
-    hands_list = hands_list.split(" ")
-    for t in range(len(hands_list)-1):
-        if t % 2 == 0:
-            hands_out = hands_out + hands_list[t] + hands_list[t + 1] + " "
-            hands_res = hands_out.strip()
+    for k in range(5, len(hands_res) - 1, 7):
+        hands_out = hands_out + hands_res[k] + hands_res[k + 1] + " "
+    hands_res = hands_out.strip(" ")
     return common2, hands_res
 
 
@@ -67,4 +67,4 @@ set3 = {Cards.Rank.Two: "2", Cards.Rank.Three: "3",
         Cards.Rank.Ten: "10", Cards.Rank.J: "J", Cards.Rank.Q: "Q",
         Cards.Rank.K: "K", Cards.Rank.A: "A"}
 set4 = {Cards.Suit.hearts: "h", Cards.Suit.diamonds: "d",
-        Cards.00Suit.clubs: "c", Cards.Suit.spades: "s"}
+        Cards.Suit.clubs: "c", Cards.Suit.spades: "s"}
