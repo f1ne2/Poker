@@ -1,6 +1,8 @@
+from typing import List, Tuple
+
 import Cards
 from Cards import Suit, Rank, Card
-from typing import List, Tuple
+
 
 
 def divide(str_cards: str) -> Tuple[str, List[str]]:
