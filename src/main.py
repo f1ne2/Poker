@@ -39,16 +39,8 @@ def main():
             res = z.is_straight_flush(z2[c])
             if res:
                 force[c] = 9
-    print(force)
     d.quick_sort(force, 0, len(force) - 1)
-    print(force)
-    for k in range(len(d.custom2)):
-        for t in range(-4, 0):
-            print(d.custom2[k][t], "  ", end="")
-        print("\n")
     i, j = to_str(x, d.custom2)
-    print(i, j)
-
 
 
 def input2():
