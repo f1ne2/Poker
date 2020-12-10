@@ -1,72 +1,76 @@
-from typing import List, Tuple
+from typing import List
 
-import Cards
 from Cards import Suit, Rank, Card
 
 
+def to_player_cards(input_cards: str) -> List[Card]:
+    cards2 = []
+    i = 0
 
-def divide(str_cards: str) -> Tuple[str, List[str]]:
-    str2 = str_cards.split(" ", 1)
-    players = str2[1].split()
-    return str2[0], players
+    while i < len(input_cards) - 1:
+        if input_cards[i] != " ":
+            if input_cards[i] != "1":
+                card1 = Card(set1.get(input_cards[i]),
+                             set1.get(input_cards[i+1]))
+                cards2.append(card1)
+                i += 2
+            else:
+                card1 = Card(set1.get(input_cards[i]+input_cards[i+1]),
+                             set1.get(input_cards[i+2]))
+                cards2.append(card1)
+                i += 3
+        else:
+            i += 1
+    # Converting to 7 PlayerCards
+    seven_cards = [[0] * 7 for k in range(len(cards2)-11)]
+    t = 5
+    for j in range(len(seven_cards)):
+        seven_cards[j][0:5] = cards2[0:5]
+        seven_cards[j][5:7] = cards2[t:t+2]
+        t += 2
+
+    return seven_cards
 
 
-def to_player_cards(common_cards: str, custom: List[str]) -> Tuple[Rank, Suit]:
-    common2 = []
-    hands_res = []
-    for i in range(len(common_cards)):
-        if common_cards[i] != "0":
-            if set1.get(common_cards[i]) is not None:
-                common2.append(set1.get(common_cards[i]))
-            if set2.get(common_cards[i]) is not None:
-                common2.append(set2.get(common_cards[i]))
-    for x in range(len(custom)):
-        for y in range(len(custom[x])):
-            if custom[x][y] != "0":
-                if set1.get(custom[x][y]) is not None:
-                    hands_res.append(set1.get(custom[x][y]))
-                if set2.get(custom[x][y]) is not None:
-                    hands_res.append(set2.get(custom[x][y]))
-    return common2, hands_res
-
-
-def to_str(common_to_str: Tuple[Rank, Suit],
-           hands_to_str: Tuple[Rank, Suit]) -> Tuple[str, List[str]]:
-    common2 = ""
+def to_str(cards_to_str: List[Card]) -> str:
+    common_res = ""
     hands_res = ""
-    for i in range(len(common_to_str)):
-        if set3.get(common_to_str[i]) is not None:
-            common2 = common2 + set3.get(common_to_str[i])
-        if set4.get(common_to_str[i]) is not None:
-            common2 = common2 + set4.get(common_to_str[i])
-    for j in range(len(hands_to_str)):
-        for t in range(len(hands_to_str[j])):
-            if set3.get(hands_to_str[j][t]) is not None:
-                hands_res = hands_res + set3.get(hands_to_str[j][t])
-            if set4.get(hands_to_str[j][t]) is not None:
-                hands_res = hands_res + set4.get(hands_to_str[j][t]) + " "
-    hands_res = hands_res.strip(" ")
-    hands_res = hands_res.split(" ")
-    hands_out = ""
-    for k in range(5, len(hands_res) - 1, 7):
-        hands_out = hands_out + hands_res[k] + hands_res[k + 1] + " "
-    hands_res = hands_out.strip(" ")
-    return common2, hands_res
+    res = ""
+
+    for i in range(5):
+        for key, value in set1.items():
+            if cards_to_str[0][i].rank == value or \
+                    cards_to_str[0][i].suit == value:
+                common_res = common_res + key
+
+    for i in range(len(cards_to_str)):
+        for j in range(-2, 0):
+            for key, value in set1.items():
+                if cards_to_str[i][j].rank == value or \
+                        cards_to_str[i][j].suit == value:
+                    res = res + key + " "
+    i = 0
+    j = 0
+    while i < len(res)-1:
+        if res[i] != " ":
+            hands_res = hands_res + res[i]
+            i += 1
+        else:
+            j += 1
+            i += 1
+            if j % 4 == 0:
+                hands_res = hands_res + " "
+    res = common_res + " " + hands_res
+    return res
 
 
-set1 = {"2": Cards.Rank.Two, "3": Cards.Rank.Three,
-        "4": Cards.Rank.Four, "5": Cards.Rank.Five,
-        "6": Cards.Rank.Six, "7": Cards.Rank.Seven,
-        "8": Cards.Rank.Eight, "9": Cards.Rank.Nine,
-        "1": Cards.Rank.Ten, "J": Cards.Rank.J, "Q": Cards.Rank.Q,
-        "K": Cards.Rank.K, "A": Cards.Rank.A}
-set2 = {"h": Cards.Suit.hearts, "d": Cards.Suit.diamonds,
-        "c": Cards.Suit.clubs, "s": Cards.Suit.spades}
-set3 = {Cards.Rank.Two: "2", Cards.Rank.Three: "3",
-        Cards.Rank.Four: "4", Cards.Rank.Five: "5",
-        Cards.Rank.Six: "6", Cards.Rank.Seven: "7",
-        Cards.Rank.Eight: "8", Cards.Rank.Nine: "9",
-        Cards.Rank.Ten: "10", Cards.Rank.J: "J", Cards.Rank.Q: "Q",
-        Cards.Rank.K: "K", Cards.Rank.A: "A"}
-set4 = {Cards.Suit.hearts: "h", Cards.Suit.diamonds: "d",
-        Cards.Suit.clubs: "c", Cards.Suit.spades: "s"}
+set1 = {"2": Rank.Two, "3": Rank.Three, "4": Rank.Four, "5": Rank.Five,
+        "6": Rank.Six, "7": Rank.Seven, "8": Rank.Eight, "9": Rank.Nine,
+        "10": Rank.Ten, "J": Rank.J, "Q": Rank.Q, "K": Rank.K, "A": Rank.A,
+        "h": Suit.hearts, "d": Suit.diamonds, "c": Suit.clubs, "s": Suit.spades
+        }
+
+
+
+
+
