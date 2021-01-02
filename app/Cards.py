@@ -25,10 +25,8 @@ class Rank(Enum):
 
 
 class Card:
-    def __init__(self, suit: Suit, rank: Rank):
-        self.suit = suit
+    def __init__(self, rank: Rank, suit: Suit):
         self.rank = rank
+        self.suit = suit
 
-    def __eq__(self, other: Rank):
-        return self.rank.value - other.rank.value
 
