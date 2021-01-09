@@ -46,12 +46,10 @@ class TestCard(unittest.TestCase):
         self.Card1 = Card(Rank.A, Suit.diamonds)
         self.Card2 = Card(Rank.Four, Suit.spades)
         self.list1 = to_cards(self.str1)
-        self.assertEqual(self.list1[0].rank, self.Card1.rank)
-        self.assertEqual(self.list1[0].suit, self.Card1.suit)
-        self.assertEqual(self.list1[1].rank, self.Card2.rank)
-        self.assertEqual(self.list1[1].suit, self.Card2.suit)
+        self.assertEqual(self.list1[0], self.Card1)
+        self.assertEqual(self.list1[1], self.Card2)
 
-    # Transfer input string to List[PlayerCards]
+# Transfer input string to List[PlayerCards]
     def test_to_player_cards(self):
         self.common_card1 = Card(Rank.Four, Suit.clubs)
         self.common_card2 = Card(Rank.K, Suit.spades)
@@ -77,22 +75,15 @@ class TestCard(unittest.TestCase):
                                  [self.player4_card1, self.player4_card2],
                                  [self.player5_card1, self.player5_card2]]
         self.list1 = to_player_cards(self.str2)
-
         for i in range(len(self.list1[0].common_cards)):
-            self.assertEqual(self.list1[0].common_cards[i].rank,
-                             self.list_common[i].rank)
-            self.assertEqual(self.list1[0].common_cards[i].suit,
-                             self.list_common[i].suit)
-            self.assertEqual(self.list1[i].custom[0].rank,
-                             self.cards_of_players[i][0].rank)
-            self.assertEqual(self.list1[i].custom[0].suit,
-                             self.cards_of_players[i][0].suit)
-            self.assertEqual(self.list1[i].custom[1].rank,
-                             self.cards_of_players[i][1].rank)
-            self.assertEqual(self.list1[i].custom[1].suit,
-                             self.cards_of_players[i][1].suit)
+            self.assertEqual(self.list1[0].common_cards[i],
+                             self.list_common[i])
+            self.assertEqual(self.list1[i].custom[0],
+                             self.cards_of_players[i][0])
+            self.assertEqual(self.list1[i].custom[1],
+                             self.cards_of_players[i][1])
 
-#     finding Card in dictionary and return its key
+    #     finding Card in dictionary and return its key
     def test_find_card_str_in_dict(self):
         self.Card1 = Card(Rank.A, Suit.diamonds)
         self.assertEqual(find_card_str_in_dict(self.Card1), "Ad")

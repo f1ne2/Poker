@@ -29,7 +29,6 @@ def to_player_cards(input_string: str) -> List[PlayerCards]:
 
 def find_card_str_in_dict(cards_to_str: Card) -> str:
     res = ""
-
     for key, value in ranks_dict.items():
         if cards_to_str.rank == value:
             res = res + key
