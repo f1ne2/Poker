@@ -58,7 +58,7 @@ def to_str(cards_to_str: List[PlayerCards]) -> str:
 
 ranks_dict: Dict[str, Rank] = {"2": Rank.Two, "3": Rank.Three, "4": Rank.Four,
                                "5": Rank.Five, "6": Rank.Six, "7": Rank.Seven,
-                               "8": Rank.Eight, "9": Rank.Nine, "10": Rank.Ten,
+                               "8": Rank.Eight, "9": Rank.Nine, "T": Rank.Ten,
                                "J": Rank.J, "Q": Rank.Q, "K": Rank.K,
                                "A": Rank.A}
 suits_dict: Dict[str, Suit] = {"h": Suit.hearts, "d": Suit.diamonds,

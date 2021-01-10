@@ -27,12 +27,13 @@ def main():
     print(res_list_str[-1], end="")
 
 
-def input2():
+def input2() -> str:
     res = str(input("input cards  "))
     return res
 
 
-def force_definition(hands_force: List[int]):
+def force_definition(hands_force: List[int]) -> List[int] and \
+                                                List[PlayerCards]:
     hands_force.sort(key=lambda x: (x[0], x[1][0], x[1][1], x[1][2], x[1][3],
                                     x[1][4]))
     return hands_force

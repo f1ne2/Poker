@@ -12,7 +12,7 @@ class PlayerCards:
         self.hand_suit = self.count_suit()
         self.force = {}
 
-    def force_hand(self):
+    def force_hand(self) -> None:
         self.is_high_card()
         self.is_pair()
         self.is_two_pairs()
