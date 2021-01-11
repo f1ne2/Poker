@@ -8,15 +8,9 @@ def to_cards(cards_str: str) -> List[Card]:
     output = []
     for i in range(len(cards_str)-1):
         if i == j:
-            if cards_str[i] != "1":
-                output.append(Card(ranks_dict.get(cards_str[i]),
-                                   suits_dict.get(cards_str[i+1])))
-                j += 2
-            else:
-                output.append(Card(ranks_dict.get(cards_str[i] +
-                                                  cards_str[i+1]),
-                                   suits_dict.get(cards_str[i+2])))
-                j += 3
+            output.append(Card(ranks_dict.get(cards_str[i]),
+                               suits_dict.get(cards_str[i+1])))
+            j += 2
     return output
 
 
