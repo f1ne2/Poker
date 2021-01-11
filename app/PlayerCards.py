@@ -13,64 +13,44 @@ class PlayerCards:
         self.force = {}
 
     def force_hand(self) -> None:
-        self.is_high_card()
-        self.is_pair()
-        self.is_two_pairs()
-        self.is_three_of_a_kind()
-        self.is_straight(straight=None)
-        self.is_flush()
-        self.is_full_house()
-        self.is_four_of_kind()
-        self.is_straight_flush()
-        self.is_royal_flush()
+        self.high_card()
+        self.pair()
+        self.two_pairs()
+        self.three_of_a_kind()
+        self.straight(straight=None)
+        self.flush()
+        self.full_house()
+        self.four_of_kind()
+        self.straight_flush()
+        self.royal_flush()
 
     def convert_to_nums(self) -> List[Rank]:
-        nums = []
-        for i in range(len(self.sum)):
-            nums.append(self.sum[i].rank)
-        return nums
+        return [self.sum[i].rank for i in range(len(self.sum))]
 
     def convert_to_suit(self) -> List[Suit]:
-        suits = []
-        for i in range(len(self.sum)):
-            suits.append(self.sum[i].suit)
-        return suits
+        return [self.sum[i].suit for i in range(len(self.sum))]
 
     def count_rank(self) -> List[int]:
-        repeated = []
-        for i in range(len(self.sum)):
-            repeated.append(self.nums.count(self.sum[i].rank))
-        return repeated
+        return [self.nums.count(cur_sum.rank) for cur_sum in self.sum]
 
     def count_suit(self) -> List[int]:
-        repeated = []
-        for i in range(len(self.sum)):
-            repeated.append(self.suits.count(self.sum[i].suit))
-        return repeated
+        return [self.suits.count(cur_suit.suit) for cur_suit in self.sum]
 
-    def is_high_card(self) -> None:
-        high_cards = []
-
+    def high_card(self) -> None:
         if self.hand_num.count(1) > 5:
-            for i, item in enumerate(self.hand_num):
-                high_cards.append(self.sum[i].rank.value)
-
-            high_cards = sorted(high_cards, reverse=True)
+            high_cards = sorted([self.sum[i].rank.value for i in
+                                 range(len(self.hand_num))], reverse=True)
             self.force = [1, high_cards[0:5], self.common_cards, self.custom]
 
-    def is_pair(self) -> None:
-        kickers = []
-
+    def pair(self) -> None:
         if self.hand_num.count(2) == 2:
-            for i, item in enumerate(self.hand_num):
-                if item != 2:
-                    kickers.append(self.sum[i].rank.value)
-
-            kickers = sorted(kickers, reverse=True)
+            kickers = sorted([self.sum[i].rank.value for i, item in
+                              enumerate(self.hand_num) if item != 2],
+                             reverse=True)
             kickers.insert(0, self.sum[self.hand_num.index(2)].rank.value)
             self.force = [2, kickers[0:5], self.common_cards, self.custom]
 
-    def is_two_pairs(self) -> None:
+    def two_pairs(self) -> None:
         two_pairs = set()
         kickers = []
 
@@ -81,8 +61,7 @@ class PlayerCards:
                 else:
                     kickers.append(self.sum[i].rank.value)
 
-            two_pairs = list(two_pairs)
-            two_pairs = sorted(two_pairs, reverse=True)
+            two_pairs = sorted(list(two_pairs), reverse=True)
 
             if len(two_pairs) == 3:
                 kickers.insert(1, two_pairs[2])
@@ -96,7 +75,7 @@ class PlayerCards:
             self.force = [3, two_pairs_high[0:5], self.common_cards,
                           self.custom]
 
-    def is_three_of_a_kind(self) -> None:
+    def three_of_a_kind(self) -> None:
         three_of_a_kind = set()
         kickers = []
 
@@ -107,8 +86,7 @@ class PlayerCards:
                 else:
                     kickers.append(self.sum[i].rank.value)
 
-            three_of_a_kind = list(three_of_a_kind)
-            three_of_a_kind = sorted(three_of_a_kind, reverse=True)
+            three_of_a_kind = sorted(list(three_of_a_kind), reverse=True)
 
             if len(three_of_a_kind) == 2:
                 for k in range(3):
@@ -122,7 +100,7 @@ class PlayerCards:
             self.force = [4, three_of_a_kind_high[0:5], self.common_cards,
                           self.custom]
 
-    def is_straight(self, straight) -> List[int]:
+    def straight(self, straight) -> List[int]:
         eq = 0
         set_straight_force = set()
         res = []
@@ -146,44 +124,35 @@ class PlayerCards:
             else:
                 eq = 0
 
-    def is_flush(self) -> None:
-        flush_force = []
-
+    def flush(self) -> None:
         if self.hand_suit.count(5) > 4 or self.hand_suit.count(6) > 4 or \
                 self.hand_suit.count(7) > 4:
-            for i, item in enumerate(self.hand_suit):
-                if item > 4:
-                    flush_force.append(self.sum[i].rank.value)
-
-            flush_force = sorted(flush_force, reverse=True)
+            flush_force = sorted([self.sum[i].rank.value for i, item in
+                                  enumerate(self.hand_suit) if item > 4],
+                                 reverse=True)
             self.force = [6, flush_force, self.common_cards, self.custom]
 
-    def is_full_house(self) -> None:
-        num_set = []
-        num_pair = []
-
+    def full_house(self) -> None:
         if self.hand_num.count(2) == 2 and self.hand_num.count(3) == 3 or \
                 self.hand_num.count(2) == 4 and self.hand_num.count(3) == 3:
-            for i, item in enumerate(self.hand_num):
-                if item == 3:
-                    num_set.append(self.sum[i].rank.value)
-                if item == 2:
-                    num_pair.append(self.sum[i].rank.value)
-
-            num_pair = sorted(num_pair, reverse=True)
+            num_set = [self.sum[i].rank.value for i, item in
+                       enumerate(self.hand_num) if item == 3]
+            num_pair = sorted([self.sum[i].rank.value for i, item in
+                               enumerate(self.hand_num) if item == 2],
+                              reverse=True)
             self.force = [7, [num_set[0], num_pair[0], 0, 0, 0],
                           self.common_cards, self.custom]
 
-    def is_four_of_kind(self) -> None:
+    def four_of_kind(self) -> None:
         if self.hand_num.count(4) == 4:
             for i, item in enumerate(self.hand_num):
                 if item == 4:
                     self.force = [8, [self.sum[i].rank.value, 0, 0, 0, 0],
                                   self.common_cards, self.custom]
 
-    def is_straight_flush(self) -> None:
+    def straight_flush(self) -> None:
         if self.force[0] == 6:
-            straight_flush_force = self.is_straight(self.force[1])
+            straight_flush_force = self.straight(self.force[1])
             try:
                 if straight_flush_force[0] == 5:
                     self.force = [9, straight_flush_force[1],
@@ -191,8 +160,7 @@ class PlayerCards:
             except:
                 pass
 
-    def is_royal_flush(self) -> None:
-        if self.force[0] == 9:
-            if self.force[1][0] == 10 and self.force[1][4] == 14:
-                self.force = [10, [0, 0, 0, 0, 0], self.common_cards,
-                              self.custom]
+    def royal_flush(self) -> None:
+        if self.force[0] == 9 and self.force[1][0] == 10 and \
+                self.force[1][4] == 14:
+            self.force = [10, [0, 0, 0, 0, 0], self.common_cards, self.custom]
