@@ -4,21 +4,14 @@ from app.PlayerCards import PlayerCards
 
 
 def to_cards(cards_str: str) -> List[Card]:
-    j = 0
-    output = []
-    for i in range(len(cards_str)-1):
-        if i == j:
-            output.append(Card(ranks_dict.get(cards_str[i]),
-                               suits_dict.get(cards_str[i+1])))
-            j += 2
-    return output
+    return [Card(ranks_dict.get(cards_str[i]), suits_dict.get(cards_str[i+1]))
+            for i in range(0, len(cards_str)-1, 2)]
 
 
 def to_player_cards(input_string: str) -> List[PlayerCards]:
-    string_cards = input_string.split(" ")
-    common_cards = to_cards(string_cards[0])
+    common_cards = to_cards(input_string.split(" ")[0])
     return [PlayerCards(common_cards, to_cards(string_card)) for string_card in
-            string_cards[1:]]
+            input_string.split(" ")[1:]]
 
 
 def find_card_str_in_dict(cards_to_str: Card) -> str:
@@ -33,21 +26,10 @@ def find_card_str_in_dict(cards_to_str: Card) -> str:
     return res
 
 
-def to_str(cards_to_str: List[PlayerCards]) -> str:
-    output_str = ""
-
-    for i in range(len(cards_to_str[0].common_cards)):
-        res = find_card_str_in_dict(cards_to_str[0].common_cards[i])
-        output_str = output_str + res
-
-    output_str = output_str + " "
-    for i in range(len(cards_to_str)):
-        the_first_card = find_card_str_in_dict(cards_to_str[i].custom[0])
-        the_second_card = find_card_str_in_dict(cards_to_str[i].custom[1])
-        output_str = output_str + the_first_card + the_second_card + " "
-
-    output_str = output_str.rstrip(" ")
-    return output_str
+def to_str(cards_to_str: PlayerCards) -> str:
+    the_first_card = find_card_str_in_dict(cards_to_str.custom[0])
+    the_second_card = find_card_str_in_dict(cards_to_str.custom[1])
+    return the_first_card + the_second_card
 
 
 ranks_dict: Dict[str, Rank] = {"2": Rank.Two, "3": Rank.Three, "4": Rank.Four,
